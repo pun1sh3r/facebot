@@ -52,13 +52,20 @@ python facebotv2.py -c emma.cfg -B
 
 #the Configuration file 
 a sample config file has been shared  however the fields above need a bit more of explanation 
-gender: 
+gender:
+
           1 : female
           2 : male
-relationship 
+relationship:
+
           1 : single
-interested
+interested:
+
           1 : women
           2 : men
-current_city : "facebook id of the city as per facebook"
-hometown : "facebook id of the city as per facebook"
+current_city:
+         
+         "facebook id of the city as per facebook"
+hometown:
+                
+          "facebook id of the city as per facebook"
