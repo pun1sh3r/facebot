@@ -131,8 +131,6 @@ class facebot():
 
 
     def crawl_friends(self):
-        #semi-complete needs to be revised: note this function was broken due a change on the html code
-        #pprint.pprint(self.browser)
         friendIds = {}
         fid = []
         friendsFid = []
@@ -256,7 +254,7 @@ class facebot():
         s.close()
 
     def send_fRequest(self,fbid,s):
-        #incomplete
+    
 
         print "check pending frequests...."
         try:
