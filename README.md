@@ -37,7 +37,9 @@ facebot is divided by two components. the masterbot.py script is the one that de
 
 ## how to use this tool:
 
-'Warning: before executing masterbot you need to create the DB in order to store all the loot. the database squema in pfd form is shown on the repo'.
+'Warning: before executing masterbot you need to create the DB in order to store all the loot. the database squema in jpg form is shown on the repo'.
+
+'warning: in order to leverage "target_mode" a fake facebook app needs to be created and an access token be created.' these steps were done manually due to lack of dev time but thats on the works...
 
 
 1- execute masterbot. once masterbot has loaded it will listen on port 1337 and ready to dish out instructions 
