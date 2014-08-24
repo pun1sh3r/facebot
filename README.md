@@ -53,7 +53,8 @@ python facebotv2.py -c emma.cfg -B
 ```
 
 #the Configuration file 
-a sample config file has been shared  however the fields above need a bit more of explanation 
+a sample config file has been shared  however the fields above need a bit more of explanation. 
+
 gender:
 
           1 : female
