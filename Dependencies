@@ -1,0 +1,11 @@
+ BeautifulSoup4
+ facepy
+ MultipartPostHandler
+ ConfigParser
+ HTMLParser
+ cookielib
+ MySQLdb
+ gdata.youtube
+ hashlib
+ multiprocessing
+ json
