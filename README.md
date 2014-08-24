@@ -72,3 +72,5 @@ current_city:
 hometown:
                 
           "facebook id of the city as per facebook"
+          
+any questions or suggestions on how to improve this tool i can be contacted at luiguibiker@gmail.com  please use the subject [facebot] so i can better track the email.
