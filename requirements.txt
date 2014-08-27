@@ -17,3 +17,4 @@ pager==3.3
 requests==2.3.0
 six==1.7.3
 wsgiref==0.1.2
+mechanize==0.2.5
