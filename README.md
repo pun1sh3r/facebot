@@ -87,4 +87,13 @@ hometown:
                 
           "facebook id of the city as per facebook"
           
+#Instructions for getting target_mode to work
+
+Until the process is automated, please use the following:
+
+1. Login to https://developers.facebook.com/ and create an app
+2. Go to or `GET` https://graph.facebook.com/oauth/access_token?client_id=YOUR APP ID&client_secret=YOUR APP SECRET&grant_type=client_credentials
+3. Got to https://developers.facebook.com/tools/explorer and place the `access_token` from the latter request to where it says `Access Token`.  Click on `Get Access Token`
+4. Copy the `Access Token` and paste it in your config file; `api_key:`
+          
 any questions or suggestions on how to improve this tool i can be contacted at luiguibiker@gmail.com  please use the subject [facebot] so i can better track the email.
