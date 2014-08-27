@@ -44,7 +44,7 @@ class sql:
 	    cur.execute(sql_create)
 	    cur.execute(sql_use)
 	    cur.execute('''CREATE TABLE fbids (
-	                    	fbid BIGINT(20),
+	                    	fbid BIGINT(20) NOT NULL,
 	                      	sent TEXT,
 	                      	crawled VARCHAR(20)
 	                                         )'''
@@ -52,7 +52,7 @@ class sql:
 
 	    cur.execute('''CREATE TABLE checkins (
 	    					checkin_id CHAR(32),
-	    					fbid BIGINT(20),
+	    					fbid BIGINT(20) NOT NULL,
 	    					message TEXT,
 	    					coords TEXT,
 	    					timestamp TIMESTAMP
@@ -60,7 +60,7 @@ class sql:
 	    				)
 
 	    cur.execute('''CREATE TABLE users (
-	    					fbid BIGINT(20),
+	    					fbid BIGINT(20) NOT NULL,
 	    					profile_url TEXT,
 	    					name TEXT,
 	    					contact_email TEXT,
@@ -78,7 +78,7 @@ class sql:
 	    				)
 
 	    cur.execute('''CREATE TABLE family (
-	    					fbid BIGINT(20),
+	    					fbid BIGINT(20) NOT NULL,
 	    					relative_id CHAR(32),
 	    					name VARCHAR(80),
 	    					relationship VARCHAR(100)
