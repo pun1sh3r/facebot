@@ -38,6 +38,7 @@ import time
 import random
 import json
 from bs4 import BeautifulSoup
+from fb_token import GetToken
 
 
 class fbScrapper(HTMLParser.HTMLParser):
@@ -468,6 +469,10 @@ class facebot():
     def collect_data(self,query,section,api_key):
         graph = GraphAPI(api_key)
         data = graph.fql(query)
+        '''
+        facepy.exceptions.OAuthError: [12] (#12) fql is deprecated for versions v2.1 and higher
+
+        '''
         for k,v in data.items():
             self.datadict['collected_data'][self.facebookID].update({section:[]})
             for i in range(0,len(v),1):
@@ -507,6 +512,11 @@ def main():
 
     if args.config:
         config = ConfigParser.ConfigParser()
+
+        get_access_token = GetToken(args.config[0])
+        token = get_access_token.browser()
+        get_access_token.SetLast(token)
+        
         config.read(args.config[0])
         sections = config.sections()
         username = config.get('profile-info','username').replace("\"","")
