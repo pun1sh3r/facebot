@@ -1,0 +1,26 @@
+
+
+[Enhancements]
+
+* Add more sources for population
+	* 9gag
+	* yelp
+	* flickr
+	
+* Content aggregation
+	[Source/Content aggregation given a specific classification or field]
+	Proposed fields – fetch content related to field 
+		* IT
+		* Fun
+		* Business
+		* Politics
+		* Local News – dependent on a users location
+
+[Milestones]
+
+	*  Automate app registration.
+	*  Migrate from FQL to FB's new GraphAPI – Could mean discarding facepy  
+	*  Better Error Handling 
+
+
+	
