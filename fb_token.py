@@ -6,13 +6,14 @@ import ConfigParser
 '''
 Note:
 
-This will not work, the error from facepy is:
+This will not work on new apps, the error from facepy is:
 
 facepy.exceptions.OAuthError: [12] (#12) fql is deprecated for versions v2.1 and higher
 
 docs: https://developers.facebook.com/docs/apps/upgrading
 	  https://github.com/jgorset/facepy/issues/103
 
+works on old apps(creation date play a big role)
 
 Proposed Fix:
 	1 - automate https://github.com/pun1sh3r/facebot/tree/dev-branch#instructions-for-getting-target_mode-to-work
@@ -38,7 +39,7 @@ class GetToken:
 		for i in options:
 			configData[i] = config.get('profile-info', i)
 
-		
+		#print configData
 		return configData
 
 	
@@ -75,7 +76,7 @@ class GetToken:
 		if (result):
 		    code = result.group().split('code=')[1]
 		else:
-		    pass
+		    print "Not found."
 
 		short_life_token_link = 'https://graph.facebook.com/v2.0/oauth/access_token?client_id=%s&client_secret=%s&redirect_uri=https://www.facebook.com/connect/login_success.html&code=%s' %(app_id, app_secret, code)
 		#print short_life_token_link
@@ -105,3 +106,8 @@ class GetToken:
 	                stack.insert(i+j, _substring)
 	            
 	    return stack
+
+
+#get_access_token = GetToken('sample_config.cfg')
+#token = get_access_token.browser()
+#get_access_token.SetLast(token)
