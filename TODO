@@ -3,7 +3,7 @@
 [Enhancements]
 
 * Add more sources for population
-	* 9gag
+	* 9gag -- Done|image fetcher (Spet. 20, 2014) Awaiting integration into Bot-mode
 	* yelp
 	* flickr
 	
@@ -18,7 +18,7 @@
 
 [Milestones]
 
-	*  Automate app registration.
+	*  Automate app registration. Done (Only works for old apps)
 	*  Migrate from FQL to FB's new GraphAPI – Could mean discarding facepy  
 	*  Better Error Handling 
 

@@ -35,6 +35,10 @@ import gdata.youtube.service
 import time
 import hashlib
 import datetime
+import sys
+import db
+from selenium import webdriver
+import ConfigParser
 
 
 categories = ["Autos","Music","Travel","Animals","Sports","Comedy","People","Entertainment","News","Howto","Education","Tech","Nonprofit","Movies"]
@@ -50,12 +54,49 @@ for c in categories:
         vLink = vLink.replace("&feature=youtube_gdata_player","")
         yt_videos.append(vLink)
 
+config_file = db.Conf()
+param = config_file.getConf()
+host = param['host']
+user = param['user']
+password = param['pass']
+dbname = param['db']
+
 try:
-    dbconn = MySQLdb.connect("127.0.0.1","user","pass","DBname" )
+    dbconn = MySQLdb.connect(host, user, password, dbname )
     cursor = dbconn.cursor()
 
 except Exception as ex:
-    print ex
+
+    print 'Could not connect to db: %s' %dbname
+    db_create = db.sql(host, user, password, dbname)
+
+    try:
+        print 'Creating database'
+        db_create.create_database()
+        print 'Created %s' %dbname
+        dbconn = MySQLdb.connect(host, user, password, dbname )
+        cursor = dbconn.cursor()
+        
+        '''^ Needed for first time launch'''
+
+    except Exception as e:
+        '''Should add proper error handling as to pinpoint the exception'''
+        code = re.findall(r'\d+', str(e))
+        if '1007' in code:
+            print 'Database already exists'
+        else:
+            print "Please check your credentials"
+
+def GetConfig():
+    configData = {}
+    config = ConfigParser.ConfigParser()
+    config.read('sample_config.cfg') #if the config-file is called via an arg, we can discard manual input...for testing
+    options = config.options('profile-info')
+    for i in options:
+        configData[i] = config.get('profile-info', i)
+
+        #print configData
+    return configData
 
 def addFbids(fbids):
     print "processing received fbid's....."
@@ -72,7 +113,7 @@ def addFbids(fbids):
                     cursor.execute(query2)
                     dbconn.commit()
                 except Exception as ex:
-                    print ex
+                    print e
             else:
                 print "fbid %s was returned due to not being accepted as a friend yet or already exist on the database ...." % (fbid)
                 query3 = 'update fbids set sent="false" where fbid="%s"' %(fbid)
@@ -93,6 +134,24 @@ def postNews():
     randnumber = random.randint(1, len(news_link) -1)
     return "write_wall::%s" % (news_link[randnumber-1])
 
+
+def post9GagImg():
+    fetch = GetConfig()
+    phantomjs = fetch['phantom_js_path'].replace("\"","")
+    webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.customHeaders.User-Agent'] = 'Mozilla/5.0 (X11; Linux i686; rv:25.0) Gecko/20100101 Firefox/25.0'
+    driver = webdriver.PhantomJS(phantomjs)
+    link = 'http://9gag.com'
+    driver.get(link)
+    img_tag = driver.find_elements_by_tag_name('img')
+    gag_list = []
+    for img_link in img_tag:
+        img_links = img_link.get_attribute('src')
+        #To avoid any unwanted links
+        if 'http://img-9gag' in img_links:
+            gag_list.append(img_links)
+
+    driver.close()
+    return gag_list
 
 def postytVideo():
     randnumber = random.randint(1, len(yt_videos) -1)
@@ -132,6 +191,7 @@ def execute_sql(sql):
     except Exception as ex:
         print ex
 
+
 def process_loot(cargo):
 
     fbid = ''
@@ -142,15 +202,35 @@ def process_loot(cargo):
             if k1 == 'about_me':
                 print "saving about me section on database... "
                 work=interests =  hometown_location = relationship_status= name=devices=sex=significant_other_id= birthday = contact_email=education=profile_url =''
+                
                 columns = ','.join(v1[0].keys())
                 interests =  v1[0]['interests']
-                hometown_location = v1[0]['hometown_location']['name']
+                #hometown_location = v1[0]['hometown_location']['name']
+                '''
+                hometown_location fails 'NoneType' object has no attribute '__getitem__' if "hometown_location": null. rm ['name'] fixes it.
+                Confirmation needed 
+                '''
+                try:
+                    hometown_location = v1[0]['hometown_location']['name']
+                    #print hometown_location
+                except:
+                    #print 'Hometown not found'
+                    pass
+                
                 relationship_status = v1[0]['relationship_status']
                 name = v1[0]['name']
                 #devices = v1[0]['devices'][0]
-                devices = v1[0]['devices'][0]['os']
-
-                print devices
+                #devices = v1[0]['devices'][0]['os']
+                '''
+                devices fails 'NoneType' object has no attribute '__getitem__' if "devices": null.
+                '''
+                try:
+                    devices = v1[0]['devices'][0]['os']
+                    #print devices
+                except:
+                    #print 'No devices found'
+                    pass
+                
                 sex = v1[0]['sex']
                 significant_other_id = v1[0]['significant_other_id']
                 if v1[0]['work']:
@@ -261,6 +341,7 @@ def serverInstr(s):
 if __name__ == '__main__':
 
     while True:
+        print random.choice(post9GagImg()) #prints a random image link from 9gag.
         time.sleep(3)
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s_1 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)

@@ -103,8 +103,11 @@ app_secret:
 
           Application Secret
 
-         
-         
+phantom_js_path:
+
+        Path to phantomJs bin file
+
+the *phantom_js_path* option should be filled with the path to your phantomJS binary file. You can find it under the phantomjs-x.x.x-linux-xxx-xx/bin/ directories. 
 #Instructions for getting target_mode to work
 
 Until the process is automated, please use the following:
