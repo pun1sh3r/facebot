@@ -6,6 +6,8 @@
 	* 9gag -- Done|image fetcher (Spet. 20, 2014) Awaiting integration into Bot-mode
 	* yelp
 	* flickr
+	* ScienceNews -- Done|link fetcher (Spet. 21, 2104) Awaiting integration into Bot-mode
+	* Eduro(quote of the day) -- Done|qoute and author fetcher (Spet. 21, 2014) I added a date validator(line 175). It should post one qoute every day. Awaiting integration into Bot-mode
 	
 * Content aggregation
 	[Source/Content aggregation given a specific classification or field]
@@ -18,7 +20,7 @@
 
 [Milestones]
 
-	*  Automate app registration. Done (Only works for old apps)
+	*  Automate app registration -- Done (Only works for old apps)
 	*  Migrate from FQL to FB's new GraphAPI – Could mean discarding facepy  
 	*  Better Error Handling 
 

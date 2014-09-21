@@ -39,6 +39,11 @@ import sys
 import db
 from selenium import webdriver
 import ConfigParser
+import feedparser
+from time import gmtime, strftime, strptime
+import datetime
+
+
 
 
 categories = ["Autos","Music","Travel","Animals","Sports","Comedy","People","Entertainment","News","Howto","Education","Tech","Nonprofit","Movies"]
@@ -113,7 +118,7 @@ def addFbids(fbids):
                     cursor.execute(query2)
                     dbconn.commit()
                 except Exception as ex:
-                    print e
+                    print ex
             else:
                 print "fbid %s was returned due to not being accepted as a friend yet or already exist on the database ...." % (fbid)
                 query3 = 'update fbids set sent="false" where fbid="%s"' %(fbid)
@@ -136,6 +141,7 @@ def postNews():
 
 
 def post9GagImg():
+    '''returns a list of 9gag image links'''
     fetch = GetConfig()
     phantomjs = fetch['phantom_js_path'].replace("\"","")
     webdriver.DesiredCapabilities.PHANTOMJS['phantomjs.page.customHeaders.User-Agent'] = 'Mozilla/5.0 (X11; Linux i686; rv:25.0) Gecko/20100101 Firefox/25.0'
@@ -152,6 +158,44 @@ def post9GagImg():
 
     driver.close()
     return gag_list
+
+
+def postScienceNews():
+    '''returns a list of sciencenews article links'''
+    feed = feedparser.parse('https://www.sciencenews.org/feeds/headlines.rss')
+    link_list = []
+    for link in range(len(feed['entries'])):
+        link_list.append(feed.entries[link]['link'])
+    
+    return link_list
+
+def postEduro():
+    feed = feedparser.parse('http://www.eduro.com/feed/')
+    content = feed['entries'][0]['summary_detail']['value']
+    '''
+    #Use this to check if the quote date is today...after all, it is qoute of the day
+    date = feed['entries'][0]['published'] #RFC 2822 
+    post_date = datetime.datetime(*time.strptime(str(date), '%a, %d %b %Y %H:%M:%S +0000')[0:5])
+    if post_date.date() == datetime.date.fromtimestamp(time.time()):
+        pass
+        #print 'Post date was today'
+    else:
+        post_to_facebook_function
+    '''
+    pattern = re.compile('<div>(.*?)</div>', re.I | re.S)
+    for i in pattern.findall(content):
+        p_remove = re.compile('<p>(.*?)</p>', re.I | re.S)
+        for q in p_remove.findall(i):
+            pass #q is returned
+        auth_remove = re.compile('<p class="author">(.*?)</p>', re.I | re.S)
+        for author in auth_remove.findall(i):
+            name = re.split('[#&;\d\n]', author) #I am very bad at regexing....
+            name_r = filter(None, name)
+
+
+    return name_r[1], q
+
+
 
 def postytVideo():
     randnumber = random.randint(1, len(yt_videos) -1)
@@ -341,7 +385,11 @@ def serverInstr(s):
 if __name__ == '__main__':
 
     while True:
-        print random.choice(post9GagImg()) #prints a random image link from 9gag.
+        #Testing
+        #print random.choice(post9GagImg()) #prints a random image link from 9gag.
+        print random.choice(postScienceNews()) #Prints a random link for www.sciencenews.org's rss feed
+        print postEduro()[0], postEduro()[1] #[0] is the author, [1] is the quote. Please check line 175 for date validation.
+        #EO-Testing
         time.sleep(3)
         s = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
         s_1 = socket.socket(socket.AF_INET,socket.SOCK_STREAM)
